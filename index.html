@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>WebDev uniandes tweets 2</title>
+  <meta charset="utf-8">
+
+  <!-- To ensure proper rendering and touching zooming in mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <!-- Title font -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+  <!-- CSS file -->
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation-tweets">
+            <span class="sr-only">Show / Hide Menu</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">WebDev Uniandes tweets 2</a>
+        </div>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navigation-tweets">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                Tweets <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="active"><a href="#">HTML tweets</a></li>
+                <li><a href="#">CSS tweets</a></li>
+                <li><a href="#">Bootstrap tweets</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
+
+          <form action="" class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <span class="glyphicon glyphicon-search"></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Jumbotron -->
+  <section class="jumbotron">
+    <div class="container">
+      <h1>WebDev Uniandes course tweets 2</h1>
+      <p>Tweets written by WebDev students at Universidad de los Andes</p>
+    </div>
+  </section>
+
+  <!-- Tweets section -->
+  <section class="main container">
+    <div>
+      <p>Search a user´s tweets:</p>
+      <input id="search" type="text" placeholder="Twitter username"/>
+    </div>
+    <div id="tweets" class="row">
+      <!-- Tweets will appear here -->
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <p>Website made by <a href="https://www.github.com/japoveda10" target="_blank">japoveda10</a></p>
+  </footer>
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script>
+  function parseTweet(tweet) {
+    var ele = $("<div class='tweet col-4'>");
+    ele.append(
+      $("<img>")
+        .attr("src", tweet.user.profile_image_url)
+        .attr("alt", tweet.user.screen_name + " profile pic")
+      );
+
+    ele.append(
+      $("<div class='name'>")
+        .text(tweet.user.screen_name));
+    ele.append(
+      $("<div class='date'>")
+        .text(tweet.created_at));
+    ele.append(
+      $("<div class='text'>")
+        .text(tweet.text));
+
+    return ele;
+  }
+
+  $.getJSON("data/class2Tweets.json", function (data) {
+
+    function onSearch() {
+      console.log($("#search").prop("value"));
+
+      data.forEach(function (tweet) {
+        if($("#search").prop("value") === tweet.user.screen_name)
+        {
+          $(".tweet").hide();
+          $("#tweets").append(parseTweet(tweet));
+        }
+      })
+    }
+
+
+    $("#tweets").html("");
+    data.forEach(function (tweet) {
+      $("#tweets").append(parseTweet(tweet));
+
+    });
+
+    $("#search").change(onSearch);
+  });
+  </script>
+
+</body>
+</html>
